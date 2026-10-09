@@ -1709,6 +1709,10 @@ class RecordView:
     def __init__(self, target: Path, dm: DataModel, actor: str, workflow_id: str, now: str):
         roles = load_json_file(target, ROLES_PATH, None)
         cooperative = roles if isinstance(roles, dict) and roles.get("enforcement") == "cooperative" else None
+        from team_contract import load_config, native_roles
+        team = load_config(target, required=False)
+        if team is not None:
+            cooperative = native_roles(team)
         self.dm = dm
         self.planner = Planner(target, dm, actor, {"kind": "workflow", "workflow": workflow_id, "run_id": "simulation"}, now, cooperative)
 

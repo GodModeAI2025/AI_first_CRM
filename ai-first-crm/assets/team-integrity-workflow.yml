@@ -1,0 +1,28 @@
+name: CRM team integrity
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+permissions:
+  contents: read
+  pull-requests: read
+  statuses: write
+jobs:
+  data-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load the pinned trusted skill runtime
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: GodModeAI2025/AI_first_CRM
+          ref: __RUNTIME_REVISION__
+          path: trusted-runtime
+          persist-credentials: false
+      - name: Validate data, permissions, approval and release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CRM_REPOSITORY: ${{ github.repository }}
+          CRM_PULL_REQUEST: ${{ github.event.pull_request.number }}
+        run: >-
+          python3 trusted-runtime/ai-first-crm/scripts/team_git.py
+          check-pr --repository "$CRM_REPOSITORY"
+          --number "$CRM_PULL_REQUEST" --post-status

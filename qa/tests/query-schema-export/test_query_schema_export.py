@@ -642,7 +642,7 @@ def test_export_crm(target: Path) -> None:
           and (knowledge / "schema/crm/datamodel.json").is_file(), "records, events and CRM views are left out, the data model stays")
     check((knowledge / "meta/manifest.json").read_bytes() == manifest, "the original manifest is bundled unchanged")
     snapshot = json.loads((skill / "references/SNAPSHOT.json").read_text(encoding="utf-8"))
-    check(snapshot["excluded_prefixes"] == ["graph/crm/", "meta/crm-events/", "meta/crm-runs/", "meta/crm-workflow-state.json", "records/"], "SNAPSHOT.json lists the excluded prefixes")
+    check(snapshot["excluded_prefixes"] == ["schema/team.json", "meta/team-operations/", "graph/crm/", "meta/crm-events/", "meta/crm-runs/", "meta/crm-workflow-state.json", "records/"], "SNAPSHOT.json lists the excluded prefixes")
     code, verify_report, _ = run(skill / "scripts/verify_knowledge.py", flags=("-I",))
     check(code == 0 and verify_report["excluded_files"] > 0 and verify_report["verified_files"] + verify_report["excluded_files"] == verify_report["files"],
           f"verify_knowledge accepts exactly the excluded prefixes ({verify_report.get('errors')})")

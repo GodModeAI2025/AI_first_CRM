@@ -392,6 +392,7 @@ def main() -> int:
     parser.add_argument("--target", required=True)
     parser.add_argument("--lock-token", required=True, help="Token returned by wiki_lock.py acquire")
     parser.add_argument("--no-tags", action="store_true", help="Do not render tags as graph nodes")
+    parser.add_argument("--now", help="Pinned ISO-8601 build instant for reproducible team validation")
     args = parser.parse_args()
 
     target = Path(args.target).expanduser().resolve()
@@ -407,7 +408,20 @@ def main() -> int:
 
     # Refresh the generated directory indexes first, so they become graph nodes
     # like any other page rather than appearing only on the next run.
-    navigation.write_indexes(target, date.today().isoformat())
+    if args.now:
+        try:
+            moment = datetime.fromisoformat(args.now.replace("Z", "+00:00"))
+            if moment.tzinfo is None:
+                raise ValueError("missing timezone")
+            moment = moment.astimezone(timezone.utc)
+        except ValueError as exc:
+            raise SystemExit("--now must be an ISO-8601 instant with a timezone") from exc
+        generated_at = moment.replace(microsecond=0).isoformat().replace("+00:00", "Z")
+        index_date = moment.date().isoformat()
+    else:
+        generated_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+        index_date = date.today().isoformat()
+    navigation.write_indexes(target, index_date)
 
     # CRM records are data with their own browser under graph/crm/; they are not
     # graph nodes and get no reading view, which keeps the graph and the release small.
@@ -564,7 +578,7 @@ def main() -> int:
                     seen_links.add(edge)
 
     graph = {
-        "generatedAt": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+        "generatedAt": generated_at,
         "title": H1.search((target / "WIKI.md").read_text(encoding="utf-8")).group(1),
         "nodes": nodes,
         "links": links,
