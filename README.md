@@ -4,7 +4,7 @@
 
 Ein CRM, dessen Bedienung von Anfang an als Gespräch gedacht ist. Du beschreibst, was du erreichen möchtest; dein Agent strukturiert Kundenwissen, Kontakte, Verkaufschancen und nächste Schritte. Daten bleiben in einem portablen Markdown-Arbeitsraum, Änderungen werden vorab gezeigt und bestätigt.
 
-[Projektseite](https://godmodeai2025.github.io/AI_first_CRM/) · [Installationspaket](dist/ai-first-crm.skill) · [Funktionsumfang](ai-first-crm/references/crm-coverage.md) · [Apache 2.0](LICENSE)
+[Projektseite](https://godmodeai2025.github.io/AI_first_CRM/) · [Installationspaket](dist/ai-first-crm.skill) · [16 CRM-Beispiele](https://godmodeai2025.github.io/AI_first_CRM/#ablaufe) · [Funktionsumfang](ai-first-crm/references/crm-coverage.md) · [Apache 2.0](LICENSE)
 
 ## Was du bekommst
 
@@ -69,4 +69,4 @@ Tests: `python3 tools/check.py`. Paket: `python3 tools/package.py`. Beides benö
 
 ## Lizenz
 
-Copyright 2026 GodModeAI2025. Code, Dokumentation und Vorlagen dieses Projekts stehen unter der **Apache License, Version 2.0**. Siehe [LICENSE](LICENSE) und [NOTICE](NOTICE). Beiträge werden unter derselben Lizenz eingebracht.
+Copyright 2026 GodModeAI2025. Code, Dokumentation und Vorlagen dieses Projekts stehen unter der **Apache License, Version 2.0**. Siehe [LICENSE](LICENSE) und [NOTICE](NOTICE). Der eingebettete Diagramm-Viewer und dessen Schrift behalten ihre MIT- bzw. OFL-Lizenz; siehe [Drittanbieterhinweise](THIRD_PARTY_NOTICES.md). Beiträge werden unter derselben Lizenz eingebracht.

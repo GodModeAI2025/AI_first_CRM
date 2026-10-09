@@ -1,0 +1,354 @@
+[
+  {
+    "id": "kontakte-importieren",
+    "title": "Kontakte importieren",
+    "prompt": "Übernimm diese Kundenliste und zeig mir Dubletten.",
+    "steps": [
+      "Kundenliste",
+      "Spalten zuordnen",
+      "Vorschau prüfen",
+      "Import anwenden",
+      "Stand freigeben",
+      "Kontakte bereit"
+    ],
+    "details": [
+      "CSV, XLSX oder JSON",
+      "Dubletten und Leerzellen",
+      "Erst nach deinem OK",
+      "Geprüfter Importplan",
+      "Ansichten und Lint",
+      "Firmen und Personen"
+    ],
+    "note": "Ein Import zeigt neue und geänderte Werte je Zeile. Leere Zellen können bestehende Werte löschen; die Vorschau macht das sichtbar."
+  },
+  {
+    "id": "kontakt-pflegen",
+    "title": "Kundenwissen pflegen",
+    "prompt": "Aktualisiere diesen Kontakt und ergänze unsere Gesprächsnotiz.",
+    "steps": [
+      "Dein Anliegen",
+      "Kontakt finden",
+      "Änderungen prüfen",
+      "Daten aktualisieren",
+      "Stand freigeben",
+      "Wissen verbunden"
+    ],
+    "details": [
+      "Kontakt und Notiz",
+      "Identität und Beziehungen",
+      "Vorschau der Werte",
+      "Kontakt und Notiz",
+      "Ansichten und Lint",
+      "Verlauf bleibt lesbar"
+    ],
+    "note": "Kontakte und Notizen bleiben mit Firma und Deal verknüpft. Fehlende Werte werden nicht erfunden."
+  },
+  {
+    "id": "deal-pflegen",
+    "title": "Deals weiterentwickeln",
+    "prompt": "Setze den Deal Relaunch auf Angebot und hinterlege den Betrag.",
+    "steps": [
+      "Deal und Phase",
+      "Deal zuordnen",
+      "Änderung prüfen",
+      "Phase aktualisieren",
+      "Stand freigeben",
+      "Pipeline aktuell"
+    ],
+    "details": [
+      "Betrag und Währung",
+      "Bestehenden Deal finden",
+      "Vorschau der Werte",
+      "Geprüfte Transaktion",
+      "Ansichten und Lint",
+      "Neue Phase sichtbar"
+    ],
+    "note": "Die Kanban-Karte wird über den Agenten geändert. Die Browseransicht bleibt schreibgeschützt."
+  },
+  {
+    "id": "pipeline-pruefen",
+    "title": "Pipeline einschätzen",
+    "prompt": "Wie hoch ist unsere gewichtete Pipeline?",
+    "steps": [
+      "Deine Frage",
+      "Stand verifizieren",
+      "Gewichte klären",
+      "Werte berechnen",
+      "Währungen trennen",
+      "Pipeline verstehen"
+    ],
+    "details": [
+      "Phasen und Zeitraum",
+      "Veröffentlichter Stand",
+      "Deine Wahrscheinlichkeiten",
+      "Beträge je Phase",
+      "Kein Währungsmix",
+      "Zahlen mit Standdatum"
+    ],
+    "note": "Dieser Ablauf liest Daten. Er ändert keine Deals und braucht keine Schreibfreigabe. Gewichte werden nur nach gesonderter Zustimmung gespeichert."
+  },
+  {
+    "id": "nachfassen",
+    "title": "Nächste Schritte planen",
+    "prompt": "Lege eine Aufgabe zum Nachfassen des Angebots an.",
+    "steps": [
+      "Dein Anliegen",
+      "Deal zuordnen",
+      "Aufgabe prüfen",
+      "Aufgabe anlegen",
+      "Stand freigeben",
+      "Nachfassen geplant"
+    ],
+    "details": [
+      "Person und Frist",
+      "Zuständigkeit klären",
+      "Explizites Datum",
+      "Mit Deal verknüpfen",
+      "Ansichten und Lint",
+      "In der Aufgabenansicht"
+    ],
+    "note": "Frist und zuständige Person werden geklärt. Es gibt keinen Hintergrunddienst für Benachrichtigungen."
+  },
+  {
+    "id": "onboarding",
+    "title": "Onboarding vorbereiten",
+    "prompt": "Wenn ein Deal gewonnen ist, bereite Aufgabe und Willkommensmail vor.",
+    "steps": [
+      "Deine Regel",
+      "Workflow entwerfen",
+      "Regel bestätigen",
+      "Fälliges ausführen",
+      "Stand freigeben",
+      "Onboarding bereit"
+    ],
+    "details": [
+      "Gewonnen als Auslöser",
+      "Aufgabe und Mailentwurf",
+      "Vor der Aktivierung",
+      "Beim nächsten Aufruf",
+      "Ansichten und Lint",
+      "Aufgabe und Entwurf"
+    ],
+    "note": "Nach bestätigter Aktivierung werden passende Ereignisse beim nächsten Aufruf verarbeitet. Die Willkommensmail bleibt ein Entwurf."
+  },
+  {
+    "id": "mails-zuordnen",
+    "title": "Mails zuordnen",
+    "prompt": "Ordne diese exportierten Mails unseren Kontakten zu.",
+    "steps": [
+      "Maildateien",
+      "Inhalte prüfen",
+      "Import bestätigen",
+      "Mails verknüpfen",
+      "Stand freigeben",
+      "Verlauf sichtbar"
+    ],
+    "details": [
+      "EML oder MBOX",
+      "Schwärzung und Zuordnung",
+      "Auch neue Kontakte prüfen",
+      "Keine Postfachverbindung",
+      "Ansichten und Lint",
+      "Am Kontakt und der Firma"
+    ],
+    "note": "Erkannte Zugangsdaten werden geschwärzt. Neue Kontakte entstehen nur mit Zustimmung; Mailanhänge werden als Metadaten erfasst."
+  },
+  {
+    "id": "termine-einordnen",
+    "title": "Termine einordnen",
+    "prompt": "Übernimm diesen Kalenderexport und ordne die Termine zu.",
+    "steps": [
+      "Kalenderdatei",
+      "Termine prüfen",
+      "Import bestätigen",
+      "Termine abgleichen",
+      "Stand freigeben",
+      "Kalender lesbar"
+    ],
+    "details": [
+      "ICS aus deinem Kalender",
+      "Zeitzone und Teilnehmer",
+      "Sichtbarkeit festlegen",
+      "UID und Aktualisierung",
+      "Ansichten und Lint",
+      "Lokale Kalenderansicht"
+    ],
+    "note": "Vorhandene Termine werden aus einer Datei importiert. Es gibt keine Kalenderbuchung und keinen Versand von Einladungen."
+  },
+  {
+    "id": "kampagne",
+    "title": "Kampagne vorbereiten",
+    "prompt": "Bereite personalisierte Entwürfe für diese freigegebene Liste vor.",
+    "steps": [
+      "Deine Kampagne",
+      "Zielgruppe prüfen",
+      "Entwürfe bestätigen",
+      "Entwürfe ablegen",
+      "Stand freigeben",
+      "Versand vorbereiten"
+    ],
+    "details": [
+      "Liste und Inhalt",
+      "Einwilligung und Sperren",
+      "Empfänger und Vorschau",
+      "EML im Postausgang",
+      "Ansichten und Lint",
+      "Du versendest extern"
+    ],
+    "note": "Empfänger ohne Einwilligung und gesperrte Adressen werden ausgeschlossen. Das CRM erzeugt Entwürfe und versendet nichts."
+  },
+  {
+    "id": "auswerten-exportieren",
+    "title": "Auswerten und exportieren",
+    "prompt": "Zeig mir die Deals dieser Woche und exportiere die freigegebene Auswahl.",
+    "steps": [
+      "Deine Frage",
+      "Stand verifizieren",
+      "Auswahl abstimmen",
+      "Export erstellen",
+      "Datenschutz nennen",
+      "Dateien mitnehmen"
+    ],
+    "details": [
+      "Zeitraum und Format",
+      "Veröffentlichter Stand",
+      "Filter und Datenumfang",
+      "CSV oder JSON",
+      "Personendaten zählen",
+      "Außerhalb des Wikis"
+    ],
+    "note": "Die Auswertung nutzt verifizierte Daten. Der Export wird außerhalb des Arbeitsraums abgelegt und benennt enthaltene personenbezogene Datensätze."
+  },
+  {
+    "id": "dubletten-zusammenfuehren",
+    "title": "Dubletten zusammenführen",
+    "prompt": "Führe diese doppelten Firmen zusammen und zeig mir die Unterschiede.",
+    "steps": [
+      "Doppelte Firmen",
+      "Werte vergleichen",
+      "Ziel bestätigen",
+      "Datensätze vereinen",
+      "Stand freigeben",
+      "Eine klare Firma"
+    ],
+    "details": [
+      "Gruppen ermitteln",
+      "Überlebenden auswählen",
+      "Ausdrücklich bestätigen",
+      "Beziehungen umhängen",
+      "Ansichten und Lint",
+      "Verknüpfungen erhalten"
+    ],
+    "note": "Du bestimmst den verbleibenden Datensatz und die gültigen Werte. Zusammenführen löscht die anderen Datensätze und verlangt eine ausdrückliche Bestätigung."
+  },
+  {
+    "id": "angebot-anhaengen",
+    "title": "Angebote anhängen",
+    "prompt": "Hänge dieses Angebot als PDF an die passende Firma.",
+    "steps": [
+      "Dein Angebot",
+      "Firma zuordnen",
+      "Anhang prüfen",
+      "Datei ablegen",
+      "Stand freigeben",
+      "Angebot verknüpft"
+    ],
+    "details": [
+      "Datei oder Link",
+      "Bestehenden Kontakt finden",
+      "Name, Größe, Prüfsumme",
+      "Kopie im Arbeitsraum",
+      "Ansichten und Lint",
+      "Am Datensatz lesbar"
+    ],
+    "note": "Dateien bis 25 MB werden nach geprüftem Plan kopiert. Größere Dateien bleiben als Link außerhalb; binäre Dateien werden nicht inhaltlich auf Zugangsdaten geprüft."
+  },
+  {
+    "id": "import-rueckgaengig",
+    "title": "Import rückgängig machen",
+    "prompt": "Mach diesen Import rückgängig und zeig mir, was sich dadurch ändert.",
+    "steps": [
+      "Import auswählen",
+      "Revert vorbereiten",
+      "Folgen bestätigen",
+      "Stand zurücksetzen",
+      "Stand freigeben",
+      "Übernahme korrigiert"
+    ],
+    "details": [
+      "Transaktion benennen",
+      "Sicherungen prüfen",
+      "Spätere Änderungen prüfen",
+      "Geprüfter Revertplan",
+      "Ansichten und Lint",
+      "Ergebnis nachvollziehbar"
+    ],
+    "note": "Neu angelegte Datensätze können beim Revert endgültig verschwinden. Spätere Änderungen werden gemeldet; die Folgen brauchen eine ausdrückliche Bestätigung. Eine Datenschutzlöschung ist nicht rückgängig zu machen."
+  },
+  {
+    "id": "personenbezogene-daten",
+    "title": "Personendaten entfernen",
+    "prompt": "Entferne die personenbezogenen Daten dieses Kontakts nach Prüfung der Löschvorschau.",
+    "steps": [
+      "Löschanliegen",
+      "Betroffene Daten",
+      "Löschung bestätigen",
+      "Daten entfernen",
+      "Stand freigeben",
+      "Grenzen prüfen"
+    ],
+    "details": [
+      "Kontakt eindeutig benennen",
+      "Verweise und Sicherungen",
+      "Ausdrücklich bestätigen",
+      "Geprüfte Löschoperation",
+      "Ansichten und Lint",
+      "Externe Kopien bleiben"
+    ],
+    "note": "Die Vorschau umfasst Datensätze, Verlauf, betroffene Anhänge und Entwürfe. Namensnennungen in Wissen und Quellen brauchen ihre eigenen Verfahren. Externe Backups und Exporte werden nicht erreicht."
+  },
+  {
+    "id": "eigene-felder",
+    "title": "Eigene Felder ergänzen",
+    "prompt": "Ergänze unsere Firmen um ein Feld für die Vertragslaufzeit.",
+    "steps": [
+      "Dein Datenfeld",
+      "Modell entwerfen",
+      "Änderung bestätigen",
+      "Schema erweitern",
+      "Stand freigeben",
+      "Feld nutzbar"
+    ],
+    "details": [
+      "Zweck und Datentyp",
+      "Abhängigkeiten prüfen",
+      "Modellvorschau prüfen",
+      "Geprüfter Schemaplan",
+      "Neue Minor-Version",
+      "In Datensätzen lesbar"
+    ],
+    "note": "Eigene Objekte und Felder werden über einen validierten Plan ergänzt. Abhängige Ansichten, Dashboards und Workflows werden vor der Änderung berücksichtigt."
+  },
+  {
+    "id": "liegende-deals",
+    "title": "Liegende Deals nachfassen",
+    "prompt": "Finde Deals ohne Fortschritt und bereite Aufgaben zum Nachfassen vor.",
+    "steps": [
+      "Deine Regel",
+      "Deals auswählen",
+      "Aufgaben bestätigen",
+      "Aufgaben anlegen",
+      "Stand freigeben",
+      "Nachfassen bereit"
+    ],
+    "details": [
+      "Zeitraum und Phase",
+      "Letzte Aktivitäten prüfen",
+      "Vorschau der Auswahl",
+      "Mit Deals verknüpfen",
+      "Ansichten und Lint",
+      "Keine Hintergrundalarme"
+    ],
+    "note": "Zuerst wird der geprüfte Stand ausgewertet. Aufgaben entstehen erst nach abgestimmter Auswahl und Vorschau. Ein wiederkehrender Workflow läuft beim nächsten Aufruf, nicht im Hintergrund."
+  }
+]
