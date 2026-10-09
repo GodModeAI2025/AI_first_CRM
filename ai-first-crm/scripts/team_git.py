@@ -1098,7 +1098,10 @@ def history_audit(source: Path, provider: Any) -> dict[str, Any]:
         provider.archive(provider.revision(source_branch(source)), current)
         verify_native(current)
         cfg = load_config(current)
-    if not permission(cfg, principal["login"], "history"):
+    if (
+        not permission(cfg, principal["login"], "history")
+        or cfg["members"].get(principal["login"], {}).get("github_id") != principal["id"]
+    ):
         raise TeamError("permission_denied")
     # Report scope without printing identifiers/values from old customer records.
     refs = git_text(

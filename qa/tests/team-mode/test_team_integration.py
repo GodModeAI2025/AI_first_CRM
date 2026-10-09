@@ -24,6 +24,7 @@ from team_git import (
     sync,
     supersede,
     cancel,
+    history_audit,
 )
 from team_integrity import verify_native, validate_candidate
 
@@ -489,6 +490,9 @@ class IntegrationTests(unittest.TestCase):
         with self.assertRaises(TeamError) as denied:
             begin(self.source, self.case / "wrong-account", str(uuid.uuid4()), provider)
         self.assertEqual(denied.exception.state, "permission_denied")
+        with self.assertRaises(TeamError) as denied_history:
+            history_audit(self.source, provider)
+        self.assertEqual(denied_history.exception.state, "permission_denied")
 
     def test_fr05_company_rename_updates_derived_contact_labels(self):
         root, p = self.start()
