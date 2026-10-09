@@ -1,0 +1,303 @@
+#!/usr/bin/env python3
+"""Create and release a complete empty wiki without exposing a lock token."""
+
+from __future__ import annotations
+
+import sys as _sys
+from pathlib import Path as _Path
+
+# Bundled helpers import their siblings; keep that working under python -I, which drops the script directory.
+_sys.dont_write_bytecode = True  # no __pycache__ in the skill or the user's cache folders
+_sys.path.insert(0, str(_Path(__file__).resolve().parent))
+
+import argparse
+import json
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+import portable_io
+from typing import Any
+from uuid import uuid4
+
+from wiki_lock import LOCK_NAME, acquire_lock, copy_lock, release_owned_lock
+
+
+class InitializationFailure(RuntimeError):
+    def __init__(self, stage: str, message: str) -> None:
+        super().__init__(message)
+        self.stage = stage
+
+
+def failure_detail(completed: "subprocess.CompletedProcess[str]") -> str:
+    """Extract a usable reason from a failed helper.
+
+    The helpers report as JSON, so taking the last output line yields "}" and
+    tells a caller nothing. Prefer the structured errors the helper reported,
+    then a plain-text message, and only then the raw tail.
+    """
+    try:
+        payload = json.loads(completed.stdout)
+    except (json.JSONDecodeError, TypeError):
+        payload = None
+    if isinstance(payload, dict):
+        errors = payload.get("errors")
+        if isinstance(errors, list) and errors:
+            shown = "; ".join(str(item) for item in errors[:5])
+            remainder = len(errors) - 5
+            return f"{shown}{f' (and {remainder} more)' if remainder > 0 else ''}"
+        for key in ("reason", "error", "state"):
+            value = payload.get(key)
+            if isinstance(value, str) and value.strip():
+                return value.strip()
+    text = (completed.stderr or "").strip()
+    if text:
+        return text.splitlines()[-1]
+    return "helper failed without a reported reason"
+
+
+def run_json(stage: str, command: list[str]) -> dict[str, Any]:
+    completed = subprocess.run(command, capture_output=True, text=True, check=False)
+    if completed.returncode != 0:
+        raise InitializationFailure(stage, failure_detail(completed))
+    try:
+        value = json.loads(completed.stdout)
+    except json.JSONDecodeError as exc:
+        raise InitializationFailure(stage, "helper returned invalid JSON") from exc
+    if not isinstance(value, dict):
+        raise InitializationFailure(stage, "helper returned an invalid result")
+    return value
+
+
+def atomic_copy(source: Path, destination: Path) -> None:
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temporary = destination.with_name(f".{destination.name}.{uuid4().hex}.tmp")
+    descriptor = os.open(str(temporary), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    try:
+        with source.open("rb") as input_handle, os.fdopen(descriptor, "wb") as output_handle:
+            shutil.copyfileobj(input_handle, output_handle)
+            output_handle.flush()
+            os.fsync(output_handle.fileno())
+        portable_io.replace_with_retry(temporary, destination)
+    finally:
+        if temporary.exists():
+            temporary.unlink()
+
+
+def publish_staged_wiki(staging: Path, target: Path) -> list[Path]:
+    created: list[Path] = []
+    try:
+        directories = sorted(
+            (path for path in staging.rglob("*") if path.is_dir()),
+            key=lambda path: len(path.relative_to(staging).parts),
+        )
+        for source in directories:
+            destination = target / source.relative_to(staging)
+            if destination.exists():
+                if not destination.is_dir():
+                    raise InitializationFailure(
+                        "commit",
+                        f"Target changed during initialization: {source.relative_to(staging).as_posix()}",
+                    )
+                continue
+            destination.mkdir()
+            created.append(destination)
+        for source in sorted(
+            path
+            for path in staging.rglob("*")
+            # The lock is a directory of per-maintainer claims, so excluding its
+            # own name is not enough; nothing below it is wiki content either.
+            if path.is_file() and LOCK_NAME not in path.relative_to(staging).parts
+        ):
+            relative = source.relative_to(staging)
+            destination = target / relative
+            if destination.exists():
+                raise InitializationFailure("commit", f"Target changed during initialization: {relative.as_posix()}")
+            atomic_copy(source, destination)
+            created.append(destination)
+    except Exception:
+        rollback_created(created, target)
+        raise
+    return created
+
+
+def rollback_created(paths: list[Path], target: Path) -> None:
+    for path in reversed(paths):
+        try:
+            if path.is_dir():
+                path.rmdir()
+            else:
+                path.unlink()
+        except FileNotFoundError:
+            pass
+        except OSError:
+            pass
+    directories = sorted(
+        {parent for path in paths for parent in path.parents if parent != target and target in parent.parents},
+        key=lambda item: len(item.parts),
+        reverse=True,
+    )
+    for directory in directories:
+        try:
+            directory.rmdir()
+        except OSError:
+            pass
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--target", required=True)
+    parser.add_argument("--title", help="Human-readable title; normally supplied explicitly")
+    parser.add_argument("--topic", required=True, help="Short topic and scope boundary")
+    parser.add_argument("--wiki-language", required=True)
+    parser.add_argument("--wiki-language-label")
+    parser.add_argument(
+        "--storage-path-prefix",
+        default="",
+        help="Decoded OneDrive or SharePoint library path; enables the storage path checks",
+    )
+    parser.add_argument("--quality-review-days", type=int, default=30)
+    parser.add_argument("--cleaning-review-days", type=int, default=90)
+    parser.add_argument("--snapshot-warning-days", type=int, default=60)
+    parser.add_argument("--identity-plan", required=True, help="Confirmed identity proposal JSON")
+    parser.add_argument("--expect-identity-sha256", required=True)
+    parser.add_argument("--owner", default="initialize-wiki", help="Public agent or run label")
+    parser.add_argument("--summary", default="Initialize portable AI First CRM")
+    args = parser.parse_args()
+
+    target = Path(args.target).expanduser().resolve()
+    record, token, _ = acquire_lock(target, args.owner, "initialize")
+    released_lock = False
+    stage = "preflight"
+    committed_paths: list[Path] = []
+    try:
+        if (target / "WIKI.md").exists():
+            raise InitializationFailure(
+                stage,
+                "Target is already an initialized wiki; use the maintenance workflow.",
+            )
+        unexpected = [path.name for path in target.iterdir() if path.name != LOCK_NAME]
+        if unexpected:
+            raise InitializationFailure(stage, f"Target is not empty: {sorted(unexpected)}")
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory(prefix="lmwiki-initialize-", dir=str(target.parent)) as temporary:
+            staged_target = Path(temporary) / "wiki"
+            staged_target.mkdir()
+            copy_lock(target, staged_target)
+            init_command = [
+                sys.executable,
+                str(scripts / "init_wiki.py"),
+                "--target", str(staged_target),
+                "--lock-token", token,
+                "--topic", args.topic,
+                "--wiki-language", args.wiki_language,
+                "--quality-review-days", str(args.quality_review_days),
+                "--cleaning-review-days", str(args.cleaning_review_days),
+                "--snapshot-warning-days", str(args.snapshot_warning_days),
+                "--identity-plan", args.identity_plan,
+                "--expect-identity-sha256", args.expect_identity_sha256,
+            ]
+            if args.title:
+                init_command.extend(("--title", args.title))
+            if args.wiki_language_label:
+                init_command.extend(("--wiki-language-label", args.wiki_language_label))
+            if args.storage_path_prefix:
+                init_command.extend(("--storage-path-prefix", args.storage_path_prefix))
+            initialized = run_json("initialize", init_command)
+            graph = run_json(
+                "graph",
+                [
+                    sys.executable, str(scripts / "build_graph.py"),
+                    "--target", str(staged_target), "--lock-token", token,
+                ],
+            )
+            lint = run_json(
+                "lint",
+                [
+                    sys.executable, str(scripts / "lint_wiki.py"),
+                    "--target", str(staged_target), "--lock-token", token, "--fix-safe",
+                ],
+            )
+            released = run_json(
+                "release",
+                [
+                    sys.executable, str(scripts / "release_wiki.py"),
+                    "--target", str(staged_target), "--lock-token", token,
+                    "--bump", "minor", "--summary", args.summary,
+                    "--operation-id", f"initialize-{record.get('lock_id', '')}",
+                    "--expect-current-version", "0.0.0",
+                ],
+            )
+            stage = "commit"
+            committed_paths = publish_staged_wiki(staged_target, target)
+        public_lock = release_owned_lock(target, token)
+        released_lock = True
+        print(json.dumps({
+            "state": "initialized",
+            "target": ".",
+            "title": initialized.get("title", ""),
+            "title_source": initialized.get("title_source", ""),
+            "identity_proposal_sha256": initialized.get("identity_proposal_sha256", ""),
+            "created": initialized.get("created", []),
+            "graph": {
+                "output": graph.get("output", "graph/index.html"),
+                "nodes": graph.get("nodes", 0),
+                "links": graph.get("links", 0),
+            },
+            "lint_valid": bool(lint.get("valid")),
+            "version": released.get("version", ""),
+            "release_id": released.get("release_id", ""),
+            "manifest": released.get("manifest", "meta/manifest.json"),
+            "manifest_sha256": released.get("manifest_sha256", ""),
+            "lock_released": True,
+            "lock_id": public_lock.get("lock_id", record.get("lock_id", "")),
+        }, ensure_ascii=False, indent=2))
+        return 0
+    except InitializationFailure as exc:
+        stage = exc.stage
+        if committed_paths:
+            rollback_created(committed_paths, target)
+        try:
+            release_owned_lock(target, token)
+            released_lock = True
+        except (OSError, SystemExit):
+            released_lock = False
+        print(json.dumps({
+            "state": "initialization_failed",
+            "stage": stage,
+            "error": str(exc),
+            "target": ".",
+            "partial_state_preserved": False,
+            "lock_released": released_lock,
+        }, ensure_ascii=False, indent=2))
+        return 4
+    except (OSError, ValueError) as exc:
+        if committed_paths:
+            rollback_created(committed_paths, target)
+        try:
+            release_owned_lock(target, token)
+            released_lock = True
+        except (OSError, SystemExit):
+            released_lock = False
+        print(json.dumps({
+            "state": "initialization_failed",
+            "stage": stage,
+            "error": str(exc),
+            "target": ".",
+            "partial_state_preserved": False,
+            "lock_released": released_lock,
+        }, ensure_ascii=False, indent=2))
+        return 4
+    finally:
+        if not released_lock:
+            try:
+                release_owned_lock(target, token)
+            except (OSError, SystemExit):
+                pass
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
