@@ -21,7 +21,7 @@ import sync_artifacts
 
 ROOT_FILES = ("WIKI.md", "WIKI_VERSION", "SOUL.md", "STANDARDS.md")
 # records/ and the CRM logs are released data of the optional CRM layer.
-CONTROLLED_DIRS = ("schema", "sources", "wiki", "graph", "records", "meta/crm-events", "meta/crm-runs")
+CONTROLLED_DIRS = ("schema", "sources", "wiki", "graph", "records", "meta/crm-events", "meta/crm-runs", "meta/team-operations")
 META_FILES = (
     "meta/sources.jsonl",
     "meta/changes.md",

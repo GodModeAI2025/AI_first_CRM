@@ -22,7 +22,7 @@ from typing import Any
 
 ROOT_FILES = ("WIKI.md", "WIKI_VERSION", "SOUL.md", "STANDARDS.md")
 # records/ and the CRM logs are released data of the optional CRM layer.
-CONTROLLED_DIRS = ("schema", "sources", "wiki", "graph", "records", "meta/crm-events", "meta/crm-runs")
+CONTROLLED_DIRS = ("schema", "sources", "wiki", "graph", "records", "meta/crm-events", "meta/crm-runs", "meta/team-operations")
 META_FILES = (
     "meta/sources.jsonl",
     "meta/changes.md",
@@ -35,6 +35,8 @@ META_FILES = (
 )
 # The only release parts an export may leave out deliberately (personal CRM data).
 EXCLUDABLE_PREFIXES = (
+    "schema/team.json",
+    "meta/team-operations/",
     "records/",
     "meta/crm-events/",
     "meta/crm-runs/",

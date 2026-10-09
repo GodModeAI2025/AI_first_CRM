@@ -8,7 +8,7 @@ Ein CRM, dessen Bedienung von Anfang an als Gespräch gedacht ist. Du beschreibs
 
 ## Was du bekommst
 
-Ein vollständiger lokal ausführbarer Agent-Skill mit Python-Laufzeit, Betriebsregeln und HTML-Ansichten. Kein gehosteter CRM-Dienst: Ein Agent mit lokalem Dateizugriff führt die mitgelieferten Werkzeuge aus. Die Python-Laufzeit selbst benötigt keine externen Bibliotheken und versendet keine Daten. Die Datenverarbeitung deines gewählten Agenten hängt von dessen Anbieter und Einstellungen ab.
+Ein vollständiger lokal ausführbarer Agent-Skill mit Python-Laufzeit, Betriebsregeln und HTML-Ansichten. Kein gehosteter CRM-Dienst: Ein Agent mit lokalem Dateizugriff führt die mitgelieferten Werkzeuge aus. Die lokale Python-Laufzeit benötigt keine externen Bibliotheken und versendet keine Mails oder CRM-Netzwerkanfragen. Der optionale Git-Teammodus nutzt authentifizierten GitHub-Zugriff für die gemeinsame Ablage und Prüfung. Die Datenverarbeitung deines gewählten Agenten hängt von dessen Anbieter und Einstellungen ab.
 
 - Firmen, Personen, Verkaufschancen, Aufgaben, Notizen, eigene Objekte und Felder.
 - CSV-, XLSX- und JSON-Import mit Vorschau, Dublettenerkennung und Export.
@@ -74,3 +74,15 @@ Copyright 2026 GodModeAI2025. Code, Dokumentation und Vorlagen dieses Projekts s
 ## Trailer
 
 [60-Sekunden-Trailer auf der Projektseite](https://godmodeai2025.github.io/AI_first_CRM/#trailer), Full HD in 16:9 mit moderner elektronischer Musik. [MP4](docs/media/trailer.mp4) · [Erste Tonfassung](docs/media/trailer-original.mp4) · [Titelbild](docs/media/trailer-poster.jpg).
+
+## Gemeinsam arbeiten, im selben Skill
+
+Der **Git-Teammodus** bleibt ein Agent-Skill mit dateibasierter Ablage. Du und dein Team arbeiten in euren jeweiligen AI-Systemen. Eure Agenten bereiten Änderungen in isolierten Kopien vor, zeigen die Vorschau und reichen bestätigte Änderungen als geschützte Git-Anträge ein. Eine geprüfte Veröffentlichung enthält den vollständigen CRM-Stand; ein veralteter Antrag überschreibt keine neueren Änderungen.
+
+Die erste unterstützte Plattform ist **GitHub.com**. Dafür braucht der Skill zusätzlich Git, authentifiziertes `gh` und ein privates Datenrepository mit tatsächlich erzwungenen Branch-Prüfungen. GitHub prüft den vollständigen Kandidaten mit einer fest gepinnten Skill-Version, ohne Code aus dem Daten-Antrag auszuführen. Es gibt keinen zusätzlichen CRM-Server und keine gesonderte Anwendung.
+
+Bitte nutze ein separates **privates Team-Datenrepository**, niemals dieses öffentliche Produktrepository für Kundendaten. Der Modus ist für Teams mit gleicher Datensichtbarkeit und unterschiedlichen Schreibrechten gedacht: Git-Leser können Dateien und Historie kopieren. Der Betamodus setzt vertrauenswürdige Repository-Schreibende voraus; Skill-Rollen ersetzen keine GitHub-Zugriffsrollen und isolieren keine fremden Workflow-Autoren. Git speichert alte personenbezogene Werte weiter. Einrichtung und destruktive Änderungen benennen diese Grenze ausdrücklich; die normale Löschfunktion ist keine vollständige Löschung der Git-Historie.
+
+Sag deinem Agenten zum Beispiel: **„Nutze ai-first-crm. Richte unseren bereits veröffentlichten Arbeitsraum für die gemeinsame private GitHub-Ablage ein. Wir wollen im Skill bleiben. Zeig mir Mitglieder, Rechte und die Auswirkungen historischer Speicherung vor der Einrichtung.“**
+
+Der Agent übernimmt Einrichtung, Vorschau, Git-Schritte, Prüfungen, Konflikte und verifizierte Rückmeldung. Der [Teammodus-Vertrag](ai-first-crm/references/team-mode.md) enthält Voraussetzungen, Rollen, den Ablauf und die konkreten Helfer. [Teamablauf auf der Projektseite](https://godmodeai2025.github.io/AI_first_CRM/#team).

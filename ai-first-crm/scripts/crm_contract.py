@@ -2418,6 +2418,8 @@ def permission_allows(roles: dict[str, Any], actor: str, object_name: str, actio
     """Cooperative role check; the wiki files themselves cannot enforce access."""
     role_name = role_for_actor(roles, actor)
     if role_name is None:
+        if roles.get("enforcement") == "team":
+            return False, "the actor is not an authorized Git team member"
         return True, ""
     role = roles.get("roles", {}).get(role_name, {})
     objects = role.get("objects", {})
@@ -2538,7 +2540,14 @@ def plan_transaction(target: Path, request: dict[str, Any], *, now: Optional[str
     if not isinstance(blocking, list) or any(not isinstance(item, dict) or not item.get("error") for item in blocking):
         raise CrmError("request.blocking_errors must be a list of {error, ...} objects")
     roles = load_json_file(target, ROLES_PATH, None)
-    planner = Planner(target, datamodel, actor, request_origin, now, roles if isinstance(roles, dict) and roles.get("enforcement") == "cooperative" else None,
+    from team_contract import TeamError, load_config, native_roles
+    try:
+        team = load_config(target, required=False)
+    except TeamError as exc:
+        raise CrmError(exc.message) from exc
+    if team is not None:
+        roles = native_roles(team)
+    planner = Planner(target, datamodel, actor, request_origin, now, roles if isinstance(roles, dict) and roles.get("enforcement") in {"cooperative", "team"} else None,
                       allow_uploads=allow_uploads)
     planner.run(operations)
     planner.validate_working()

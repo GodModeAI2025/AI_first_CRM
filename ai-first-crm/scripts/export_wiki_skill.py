@@ -88,7 +88,7 @@ SIZE_OPTIONS = (
     "claude.ai, Claude Cowork and the Skills API will reject the upload",
 )
 # Personal CRM data an export may leave out; the bundled verifier accepts exactly these.
-CRM_EXCLUDED_PREFIXES = ("graph/crm/", "meta/crm-events/", "meta/crm-runs/", "meta/crm-workflow-state.json", "records/")
+CRM_EXCLUDED_PREFIXES = ("schema/team.json", "meta/team-operations/", "graph/crm/", "meta/crm-events/", "meta/crm-runs/", "meta/crm-workflow-state.json", "records/")
 ENTRYPOINTS = ("verify_knowledge.py", "search_knowledge.py", "assess_quality.py", "identity_status.py")
 LIBRARY_MODULES = ("frontmatter_contract.py", "wiki_filters.py", "trust_contract.py")
 CRM_ENTRYPOINTS = ("query_records.py",)
@@ -399,19 +399,22 @@ def crm_summary(target: Path, paths: list[str]) -> dict[str, Any]:
         "records": sum(by_object.values()),
         "events": lines("meta/crm-events/"),
         "workflow_runs": lines("meta/crm-runs/"),
+        "team_members": len(json.loads((target / "schema/team.json").read_text()).get("members", {})) if "schema/team.json" in paths else 0,
+        "team_operations": sum(1 for relative in paths if relative.startswith("meta/team-operations/")),
         "stored_files": sum(1 for relative in paths if relative.startswith("records/_files/")),
         "outbox_files": sum(1 for relative in paths if relative.startswith("records/_outbox/")),
     }
 
 
 def personal_data_warning(crm: dict[str, Any]) -> Optional[str]:
-    if not crm["records"] and not crm["events"] and not crm["workflow_runs"] and not crm.get("stored_files") and not crm.get("outbox_files"):
+    if not crm["records"] and not crm["events"] and not crm["workflow_runs"] and not crm.get("stored_files") and not crm.get("outbox_files") and not crm.get("team_members") and not crm.get("team_operations"):
         return None
     counts = ", ".join(f"{name} {count}" for name, count in crm["records_by_object"].items()) or "none"
     return (
         f"This export contains {crm['records']} CRM records ({counts}), records in the trash included, "
         f"{crm['events']} change events, {crm['workflow_runs']} workflow run entries, {crm.get('stored_files', 0)} stored files "
-        f"and {crm.get('outbox_files', 0)} outbox drafts. These are personal data. "
+        f"and {crm.get('outbox_files', 0)} outbox drafts, plus {crm.get('team_members', 0)} team identities "
+        f"and {crm.get('team_operations', 0)} team operation receipts. These are personal data. "
         "A shared copy cannot be recalled, and a later erasure in the canonical wiki does not reach it. "
         "Share the package only with people who may see all of these records, or export again with --exclude-crm."
     )
