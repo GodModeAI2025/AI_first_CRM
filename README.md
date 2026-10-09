@@ -70,3 +70,7 @@ Tests: `python3 tools/check.py`. Paket: `python3 tools/package.py`. Beides benö
 ## Lizenz
 
 Copyright 2026 GodModeAI2025. Code, Dokumentation und Vorlagen dieses Projekts stehen unter der **Apache License, Version 2.0**. Siehe [LICENSE](LICENSE) und [NOTICE](NOTICE). Der eingebettete Diagramm-Viewer und dessen Schrift behalten ihre MIT- bzw. OFL-Lizenz; siehe [Drittanbieterhinweise](THIRD_PARTY_NOTICES.md). Beiträge werden unter derselben Lizenz eingebracht.
+
+## Trailer
+
+[60-Sekunden-Trailer auf der Projektseite](https://godmodeai2025.github.io/AI_first_CRM/#trailer), Full HD in 16:9 mit moderner elektronischer Musik. [MP4](docs/media/trailer.mp4) · [Erste Tonfassung](docs/media/trailer-original.mp4) · [Titelbild](docs/media/trailer-poster.jpg).
