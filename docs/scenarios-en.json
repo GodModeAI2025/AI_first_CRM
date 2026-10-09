@@ -1,0 +1,354 @@
+[
+  {
+    "id": "kontakte-importieren",
+    "title": "Import contacts",
+    "prompt": "Import this customer list and show me duplicates.",
+    "steps": [
+      "Customer list",
+      "Map columns",
+      "Review preview",
+      "Apply import",
+      "Publish state",
+      "Contacts ready"
+    ],
+    "details": [
+      "CSV, XLSX or JSON",
+      "Duplicates and empty cells",
+      "After your approval",
+      "Verified import plan",
+      "Views and validation",
+      "Companies and people"
+    ],
+    "note": "An import previews new and changed values for each row. Empty cells can clear existing values; the preview makes this visible."
+  },
+  {
+    "id": "kontakt-pflegen",
+    "title": "Maintain customer knowledge",
+    "prompt": "Update this contact and add our conversation note.",
+    "steps": [
+      "Your request",
+      "Find contact",
+      "Review changes",
+      "Update data",
+      "Publish state",
+      "Knowledge linked"
+    ],
+    "details": [
+      "Contact and note",
+      "Identity and relationships",
+      "Preview field values",
+      "Contact and note",
+      "Views and validation",
+      "Readable history"
+    ],
+    "note": "Contacts and notes remain linked to the company and deal. Missing values are not invented."
+  },
+  {
+    "id": "deal-pflegen",
+    "title": "Develop deals",
+    "prompt": "Move the Relaunch deal to Proposal and record its amount.",
+    "steps": [
+      "Deal and stage",
+      "Identify deal",
+      "Review change",
+      "Update stage",
+      "Publish state",
+      "Pipeline updated"
+    ],
+    "details": [
+      "Amount and currency",
+      "Find existing deal",
+      "Preview field values",
+      "Verified transaction",
+      "Views and validation",
+      "New stage visible"
+    ],
+    "note": "Kanban cards are updated through the agent. The browser view remains read-only."
+  },
+  {
+    "id": "pipeline-pruefen",
+    "title": "Assess the pipeline",
+    "prompt": "What is the value of our weighted pipeline?",
+    "steps": [
+      "Your question",
+      "Verify state",
+      "Clarify weights",
+      "Calculate values",
+      "Separate currencies",
+      "Understand pipeline"
+    ],
+    "details": [
+      "Stages and time range",
+      "Published state",
+      "Your probabilities",
+      "Amounts by stage",
+      "No currency mixing",
+      "Figures with state date"
+    ],
+    "note": "This workflow reads data. It does not change deals or require write approval. Weights are saved only with separate approval."
+  },
+  {
+    "id": "nachfassen",
+    "title": "Plan next steps",
+    "prompt": "Create a task to follow up on the proposal.",
+    "steps": [
+      "Your request",
+      "Identify deal",
+      "Review task",
+      "Create task",
+      "Publish state",
+      "Follow-up planned"
+    ],
+    "details": [
+      "Person and deadline",
+      "Clarify responsibility",
+      "Explicit date",
+      "Link to deal",
+      "Views and validation",
+      "In the task view"
+    ],
+    "note": "The deadline and assignee are clarified. There is no background notification service."
+  },
+  {
+    "id": "onboarding",
+    "title": "Prepare onboarding",
+    "prompt": "When a deal is won, prepare an onboarding task and welcome email.",
+    "steps": [
+      "Your rule",
+      "Design workflow",
+      "Confirm rule",
+      "Run due work",
+      "Publish state",
+      "Onboarding ready"
+    ],
+    "details": [
+      "Won as trigger",
+      "Task and email draft",
+      "Before activation",
+      "On next invocation",
+      "Views and validation",
+      "Task and draft"
+    ],
+    "note": "After approved activation, matching events are processed on the next invocation. The welcome email remains a draft."
+  },
+  {
+    "id": "mails-zuordnen",
+    "title": "Link messages",
+    "prompt": "Assign these exported messages to our contacts.",
+    "steps": [
+      "Message files",
+      "Review content",
+      "Confirm import",
+      "Link messages",
+      "Publish state",
+      "History visible"
+    ],
+    "details": [
+      "EML or MBOX",
+      "Redaction and matching",
+      "Review new contacts",
+      "No mailbox connection",
+      "Views and validation",
+      "On contact and company"
+    ],
+    "note": "Detected credentials are redacted. New contacts require approval; message attachments are recorded as metadata."
+  },
+  {
+    "id": "termine-einordnen",
+    "title": "Organize events",
+    "prompt": "Import this calendar export and match the events.",
+    "steps": [
+      "Calendar file",
+      "Review events",
+      "Confirm import",
+      "Reconcile events",
+      "Publish state",
+      "Calendar readable"
+    ],
+    "details": [
+      "ICS from your calendar",
+      "Time zone and attendees",
+      "Choose visibility",
+      "UID and updates",
+      "Views and validation",
+      "Local calendar view"
+    ],
+    "note": "Existing events are imported from a file. There is no calendar booking or invitation sending."
+  },
+  {
+    "id": "kampagne",
+    "title": "Prepare campaigns",
+    "prompt": "Prepare personalized drafts for this approved list.",
+    "steps": [
+      "Your campaign",
+      "Review audience",
+      "Confirm drafts",
+      "Store drafts",
+      "Publish state",
+      "Prepare sending"
+    ],
+    "details": [
+      "List and content",
+      "Consent and suppressions",
+      "Recipients and preview",
+      "EML in the outbox",
+      "Views and validation",
+      "You send externally"
+    ],
+    "note": "Recipients without consent and suppressed addresses are excluded. The CRM generates drafts and sends nothing."
+  },
+  {
+    "id": "auswerten-exportieren",
+    "title": "Analyze and export",
+    "prompt": "Show this week's deals and export the approved selection.",
+    "steps": [
+      "Your question",
+      "Verify state",
+      "Agree selection",
+      "Create export",
+      "Disclose personal data",
+      "Take your files"
+    ],
+    "details": [
+      "Time range and format",
+      "Published state",
+      "Filters and data scope",
+      "CSV or JSON",
+      "Count personal records",
+      "Outside the wiki"
+    ],
+    "note": "Analysis uses verified data. The export is written outside the workspace and identifies included personal data."
+  },
+  {
+    "id": "dubletten-zusammenfuehren",
+    "title": "Merge duplicates",
+    "prompt": "Merge these duplicate companies and show me their differences.",
+    "steps": [
+      "Duplicate companies",
+      "Compare values",
+      "Confirm survivor",
+      "Merge records",
+      "Publish state",
+      "One clear company"
+    ],
+    "details": [
+      "Identify groups",
+      "Choose surviving record",
+      "Explicit approval",
+      "Redirect relationships",
+      "Views and validation",
+      "Links preserved"
+    ],
+    "note": "You choose the surviving record and valid values. Merging destroys the other records and requires explicit approval."
+  },
+  {
+    "id": "angebot-anhaengen",
+    "title": "Attach proposals",
+    "prompt": "Attach this proposal PDF to the appropriate company.",
+    "steps": [
+      "Your proposal",
+      "Match company",
+      "Review attachment",
+      "Store file",
+      "Publish state",
+      "Proposal linked"
+    ],
+    "details": [
+      "File or link",
+      "Find existing contact",
+      "Name, size, checksum",
+      "Copy in workspace",
+      "Views and validation",
+      "Readable on record"
+    ],
+    "note": "Files up to 25 MB are copied after a verified plan. Larger files remain external links; binary files are not inspected for credentials in their contents."
+  },
+  {
+    "id": "import-rueckgaengig",
+    "title": "Undo an import",
+    "prompt": "Undo this import and show me what will change.",
+    "steps": [
+      "Choose import",
+      "Prepare revert",
+      "Confirm consequences",
+      "Restore state",
+      "Publish state",
+      "Import corrected"
+    ],
+    "details": [
+      "Identify transaction",
+      "Review snapshots",
+      "Check later changes",
+      "Verified revert plan",
+      "Views and validation",
+      "Traceable outcome"
+    ],
+    "note": "A revert may permanently remove newly created records. Later changes are reported; the consequences require explicit approval. Privacy erasure cannot be undone."
+  },
+  {
+    "id": "personenbezogene-daten",
+    "title": "Remove personal data",
+    "prompt": "Remove this contact's personal data after reviewing the erasure preview.",
+    "steps": [
+      "Erasure request",
+      "Affected data",
+      "Confirm erasure",
+      "Remove data",
+      "Publish state",
+      "Review boundaries"
+    ],
+    "details": [
+      "Identify contact clearly",
+      "Links and snapshots",
+      "Explicit approval",
+      "Verified erasure",
+      "Views and validation",
+      "External copies remain"
+    ],
+    "note": "The preview covers records, history, affected attachments and drafts. Name mentions in knowledge and sources need their own procedures. External backups and exports are not reached."
+  },
+  {
+    "id": "eigene-felder",
+    "title": "Add custom fields",
+    "prompt": "Add a contract duration field to our companies.",
+    "steps": [
+      "Your data field",
+      "Design model",
+      "Confirm change",
+      "Extend schema",
+      "Publish state",
+      "Field available"
+    ],
+    "details": [
+      "Purpose and data type",
+      "Check dependencies",
+      "Review model preview",
+      "Verified schema plan",
+      "New minor version",
+      "Readable on records"
+    ],
+    "note": "Custom objects and fields are added through a validated plan. Dependent views, dashboards and workflows are considered before the change."
+  },
+  {
+    "id": "liegende-deals",
+    "title": "Follow up stalled deals",
+    "prompt": "Find deals without progress and prepare follow-up tasks.",
+    "steps": [
+      "Your rule",
+      "Select deals",
+      "Confirm tasks",
+      "Create tasks",
+      "Publish state",
+      "Follow-up ready"
+    ],
+    "details": [
+      "Time range and stage",
+      "Check recent activity",
+      "Preview selection",
+      "Link to deals",
+      "Views and validation",
+      "No background alerts"
+    ],
+    "note": "First, the verified state is analyzed. Tasks are created only after an agreed selection and preview. A recurring workflow runs on the next invocation, not in the background."
+  }
+]
